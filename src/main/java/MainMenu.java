@@ -3,6 +3,7 @@ import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
+import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 
 import javax.swing.*;
 import java.io.File;
@@ -56,15 +57,24 @@ public class MainMenu {
 
 
     public static void cortarVideos(File selectedVideo, int numbersOfParts) throws IOException {
-        int partvideo = 0;
+        FFprobe ffprobe = new FFprobe("/usr/bin/ffprobe");
+        //FFmpegProbeResult probeResult=ffprobe.probe(selectedVideo.getAbsolutePath());
 
-        outputFilePath = selectedVideo.getParent().concat(selectedVideo.getName() + "part_" + partvideo);
+        double totalDuration =
+                ffprobe.probe(selectedVideo.getAbsolutePath())
+                        .getFormat().duration;//probe selecciona el video, toma el tiempo y luego lo formateamos a la duracion en  double
+
+
+        double durationPerPart = totalDuration / numbersOfParts;
+
+
+        outputFilePath = selectedVideo.getParent().concat(selectedVideo.getName() + "part_" + numbersOfParts);
         //selecciona ruta donde esta ffmpeg
         FFmpeg ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
         //ejecuta ffmpeg
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg);
 //analiza la informacion multimedia
-        FFprobe ffprobe = new FFprobe("/usr/bin/ffprobe");
+
         //manipulacion del video
         FFmpegBuilder builder = new FFmpegBuilder()
                 .setInput(selectedVideo.getAbsolutePath())//archivo de entrada
