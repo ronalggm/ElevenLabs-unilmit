@@ -67,20 +67,24 @@ public class MainMenu {
 
         double durationPerPart = totalDuration / numbersOfParts;
 
+        for (int i = 0; i < numbersOfParts; i++) {
 
-        outputFilePath = selectedVideo.getParent().concat(selectedVideo.getName() + "part_" + numbersOfParts);
-        //selecciona ruta donde esta ffmpeg
-        FFmpeg ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
-        //ejecuta ffmpeg
-        FFmpegExecutor executor = new FFmpegExecutor(ffmpeg);
+            outputFilePath = selectedVideo.getParent().concat(selectedVideo.getName() + "part_" + (i + 1));
+            //selecciona ruta donde esta ffmpeg
+            FFmpeg ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
+            //ejecuta ffmpeg
+            FFmpegExecutor executor = new FFmpegExecutor(ffmpeg);
 //analiza la informacion multimedia
 
-        //manipulacion del video
-        FFmpegBuilder builder = new FFmpegBuilder()
-                .setInput(selectedVideo.getAbsolutePath())//archivo de entrada
-                .overrideOutputFiles(true)//Sobrescribir archivo de salida si existe
-                .addOutput(outputFilePath)//archivo de salida
-                .done();
+            //manipulacion del video
+            FFmpegBuilder builder = new FFmpegBuilder()
+                    .setInput(selectedVideo.getAbsolutePath())//archivo de entrada
+                    .overrideOutputFiles(true)//Sobrescribir archivo de salida si existe
+                    .addOutput(outputFilePath)//archivo de salida
+                    .done();
+
+
+        }
 
 
     }
