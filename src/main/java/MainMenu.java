@@ -4,11 +4,13 @@ import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
+import org.checkerframework.checker.units.qual.N;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class MainMenu {
     private final int CUT_IN_TWO = 2;
@@ -17,75 +19,33 @@ public class MainMenu {
     private static String outputFilePath;
 
     public static void main(String[] args) throws IOException {
-        //creamos el file choser
-
-
-        System.out.println("Menu principal");
-
-        System.out.println("Cortar videos =1");
-        //  cortarVideos(selectVideos());
+        menuPrincipal();
 
     }
 
 
-    //METODOS
-    public static File selectFiles() throws IOException {
-        JFileChooser fileChooser = new JFileChooser();
+    public static void menuPrincipal() throws IOException {
+        Scanner input = new Scanner(System.in);
 
-        //SELECCIONA EL TIPO DE SELECCION, SI ARCHIVOS O CARPETAS
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        System.out.println("Main menu");
+        System.out.println("Press the number option to start");
+        System.out.println("1 Cut a video");
+        int option = input.nextInt();
 
-        int result = fileChooser.showOpenDialog(null);
+        switch (option) {
+            case 1:
+                Scanner parts = new Scanner(System.in);
+                File selectedFile = SelectFiles.selectFiles();
 
-        if (result == JFileChooser.APPROVE_OPTION) {
-            //seleccionamos el archivo y lo almacenamos en una variable File
-            File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("ingrese la cantidad de partes en que desa cortar 2, 3, 4");
 
-            //Mostrar la ruta del archivo seleccionado
-            System.out.println("Archivo seleccionado" + selectedFile.getAbsolutePath());
-
-
-            return selectedFile;
-
-        } else {
-            System.out.println("No se seleccionó ningun archivo");
-            throw new IOException("Operacion cancelada por el usuario");
+                VideoSplitter.splitVideo(selectedFile, parts.nextInt());
 
         }
-
-    }
-
-
-    public static void cortarVideos(File selectedVideo, int numbersOfParts) throws IOException {
-        FFprobe ffprobe = new FFprobe("/usr/bin/ffprobe");
-        //FFmpegProbeResult probeResult=ffprobe.probe(selectedVideo.getAbsolutePath());
-
-        double totalDuration =
-                ffprobe.probe(selectedVideo.getAbsolutePath())
-                        .getFormat().duration;//probe selecciona el video, toma el tiempo y luego lo formateamos a la duracion en  double
-
-
-        double durationPerPart = totalDuration / numbersOfParts;
-
-        for (int i = 0; i < numbersOfParts; i++) {
-
-            outputFilePath = selectedVideo.getParent().concat(selectedVideo.getName() + "part_" + (i + 1));
-            //selecciona ruta donde esta ffmpeg
-            FFmpeg ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
-            //ejecuta ffmpeg
-            FFmpegExecutor executor = new FFmpegExecutor(ffmpeg);
-//analiza la informacion multimedia
-
-            //manipulacion del video
-            FFmpegBuilder builder = new FFmpegBuilder()
-                    .setInput(selectedVideo.getAbsolutePath())//archivo de entrada
-                    .overrideOutputFiles(true)//Sobrescribir archivo de salida si existe
-                    .addOutput(outputFilePath)//archivo de salida
-                    .done();
-
-
-        }
-
 
     }
 }
+
+
+
+
