@@ -26,6 +26,9 @@ public class SelectorFiles {
             File selectedFile = fileChooser.getSelectedFile();
             //Mostrar la ruta del archivo seleccionado
             System.out.println("Archivo seleccionado" + selectedFile.getAbsolutePath());
+
+            lastDirectory = selectedFile.getPath();
+            System.out.println("last DIRECTORTY: " + lastDirectory);
             return selectedFile;
 
         } else if (result == JFileChooser.CANCEL_OPTION) {
@@ -45,6 +48,10 @@ public class SelectorFiles {
         if (lastDirectory == null) {
             throw new IOException("No se ha seleccionado ningun directorio  previamente");
         }
+        String regex = ".*_part_\\d+\\.mp4";
+        if (filename.matches(regex)) {
+
+        }
 
         File file = new File(lastDirectory, filename);
 
@@ -52,6 +59,7 @@ public class SelectorFiles {
             System.out.println("Archivo encontrado: " + file.getAbsolutePath());
             return file;
         } else {
+            MainMenu.menuPrincipal();
             throw new IOException("El archivo no existe en el último directorio seleccionado");
         }
     }
