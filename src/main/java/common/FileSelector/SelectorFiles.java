@@ -1,9 +1,13 @@
+package common.FileSelector;
+
+import common.MainMenu;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
-public class SelectFiles {
-
+public class SelectorFiles {
+    private static String lastDirectory = null;
     //METODOS
 
     //file chooser
@@ -25,13 +29,31 @@ public class SelectFiles {
             return selectedFile;
 
         } else if (result == JFileChooser.CANCEL_OPTION) {
-            System.out.println("No se seleccionó ningun archivo, intentelo de nuevo");
+            System.out.println("No se seleccionó ningun archivo");
             //return null;
+
             MainMenu.menuPrincipal();
+
 
         }
 
         return selectFiles();
+    }
+
+
+    public static File getFileFromLastDirectory(String filename) throws IOException {
+        if (lastDirectory == null) {
+            throw new IOException("No se ha seleccionado ningun directorio  previamente");
+        }
+
+        File file = new File(lastDirectory, filename);
+
+        if (file.exists()) {
+            System.out.println("Archivo encontrado: " + file.getAbsolutePath());
+            return file;
+        } else {
+            throw new IOException("El archivo no existe en el último directorio seleccionado");
+        }
     }
 }
 
