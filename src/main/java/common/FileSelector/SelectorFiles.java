@@ -48,10 +48,12 @@ public class SelectorFiles {
         }
 
         return selectFiles();
+
+
     }
 
 
-    public static File[] getFileFromLastDirectory() throws IOException {
+    public static File[] getAllFilesFromLastDirectory() throws IOException {
 
         if (lastDirectory == null) {
             throw new IOException("No se ha seleccionado ningun directorio  previamente");
@@ -69,6 +71,11 @@ public class SelectorFiles {
 
         return filteredFilesNames = listFiltered.toArray(new File[0]);
 
+    }
+
+
+    public static File[] getLisfOffiles() {
+        return lisfOffiles;
     }
 }
 
