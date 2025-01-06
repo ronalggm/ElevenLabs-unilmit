@@ -5,9 +5,13 @@ import common.MainMenu;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SelectorFiles {
     private static String lastDirectory = null;
+    private static File[] lisfOffiles;
     //METODOS
 
     //file chooser
@@ -26,9 +30,11 @@ public class SelectorFiles {
             File selectedFile = fileChooser.getSelectedFile();
             //Mostrar la ruta del archivo seleccionado
             System.out.println("Archivo seleccionado" + selectedFile.getAbsolutePath());
-
             lastDirectory = selectedFile.getPath();
             System.out.println("last DIRECTORTY: " + lastDirectory);
+            //extraemos la lista de archivos dentro del directorio
+            lisfOffiles = fileChooser.getSelectedFiles();
+            //retornamos el arhivo para cortar
             return selectedFile;
 
         } else if (result == JFileChooser.CANCEL_OPTION) {
@@ -37,31 +43,24 @@ public class SelectorFiles {
 
             MainMenu.menuPrincipal();
 
-
         }
 
         return selectFiles();
     }
 
 
-    public static File getFileFromLastDirectory(String filename) throws IOException {
+    public static List<String> getFileFromLastDirectory() throws IOException {
+
+        String regex = ".*_part_\\d+\\.mp4";
+
+
+
         if (lastDirectory == null) {
             throw new IOException("No se ha seleccionado ningun directorio  previamente");
         }
-        String regex = ".*_part_\\d+\\.mp4";
-        if (filename.matches(regex)) {
 
-        }
 
-        File file = new File(lastDirectory, filename);
-
-        if (file.exists()) {
-            System.out.println("Archivo encontrado: " + file.getAbsolutePath());
-            return file;
-        } else {
-            MainMenu.menuPrincipal();
-            throw new IOException("El archivo no existe en el último directorio seleccionado");
-        }
+        return List.of();
     }
 }
 
