@@ -7,21 +7,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SelectorFiles {
     private static String lastDirectory = null;
     private static File selectedFile;
     private static File[] lisfOffiles;
-    private static String[] filteredFilesNames;
+    private static File[] filteredFilesNames;
+    private static JFileChooser fileChooser = new JFileChooser();
+
+
     //METODOS
 
     //file chooser
     public static File selectFiles() throws IOException {
-
-
-        JFileChooser fileChooser = new JFileChooser();
-
         //SELECCIONA EL TIPO DE SELECCION, SI ARCHIVOS O CARPETAS
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -51,23 +51,24 @@ public class SelectorFiles {
     }
 
 
-    public static List<String> getFileFromLastDirectory() throws IOException {
-        String regex = ".*_part_\\d+\\.mp4";
-        ArrayList<String> listFiltered = new ArrayList<>();
-
-        for (File lisfOffile : lisfOffiles) {
-            if (lisfOffile.getName().matches(regex)) {
-                listFiltered.add(lisfOffile.getName());
-            }
-        }
-
+    public static File[] getFileFromLastDirectory() throws IOException {
 
         if (lastDirectory == null) {
             throw new IOException("No se ha seleccionado ningun directorio  previamente");
         }
+        String regex = ".*_part_\\d+\\.mp4";
+
+        ArrayList<File> listFiltered = new ArrayList<>();
+
+        for (File file : lisfOffiles) {
+            if (file.getName().matches(regex)) {
+                listFiltered.add(file);
+            }
+        }
 
 
-        return List.of();
+        return filteredFilesNames = listFiltered.toArray(new File[0]);
+
     }
 }
 
