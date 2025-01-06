@@ -30,7 +30,11 @@ public class MainMenu {
         switch (option) {
             case 1:
                 Scanner parts = new Scanner(System.in);
+                /*se lo tengo que pasar a una nueva variable porque el metodo
+                 retorna un tipo File y se retorna a si mismo
+                 --> */
                 File selectedFile = SelectorFiles.selectFiles();
+
 
                 System.out.println("ingrese la cantidad de partes en que desa cortar 2, 3, 4");
 

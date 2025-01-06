@@ -6,12 +6,14 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 
 public class SelectorFiles {
     private static String lastDirectory = null;
+    private static File selectedFile;
     private static File[] lisfOffiles;
+    private static String[] filteredFilesNames;
     //METODOS
 
     //file chooser
@@ -27,7 +29,7 @@ public class SelectorFiles {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             //seleccionamos el archivo y lo almacenamos en una variable File
-            File selectedFile = fileChooser.getSelectedFile();
+            selectedFile = fileChooser.getSelectedFile();
             //Mostrar la ruta del archivo seleccionado
             System.out.println("Archivo seleccionado" + selectedFile.getAbsolutePath());
             lastDirectory = selectedFile.getPath();
@@ -50,9 +52,14 @@ public class SelectorFiles {
 
 
     public static List<String> getFileFromLastDirectory() throws IOException {
-
         String regex = ".*_part_\\d+\\.mp4";
+        ArrayList<String> listFiltered = new ArrayList<>();
 
+        for (File lisfOffile : lisfOffiles) {
+            if (lisfOffile.getName().matches(regex)) {
+                listFiltered.add(lisfOffile.getName());
+            }
+        }
 
 
         if (lastDirectory == null) {
