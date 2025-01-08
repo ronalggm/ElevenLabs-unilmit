@@ -53,20 +53,20 @@ public class VideoSplitter {
         double segmentDuration = 270; //4,30minutos
         int fullSegments = (int) (totalDuration / segmentDuration);
         double remainingTime = totalDuration % segmentDuration;
+        double cutPosition;
         for (int i = 1; i <= fullSegments; i++) {
-
-            double cutPosition = fullSegments * i;
             if (i == fullSegments && remainingTime > 0) {
                 segmentDuration = remainingTime;
             }
+            cutPosition = fullSegments * i;
             ffmpegBuilder(selectedVideo, cutPosition, segmentDuration, i);
         }
 
 
     }
 
-//configura el archivo de salida
-    public static void ffmpegBuilder(File selectedVideo, double cutPosition, double partDuration, int numberPart) {
+    //configura el archivo de salida
+    private static void ffmpegBuilder(File selectedVideo, double cutPosition, double partDuration, int numberPart) {
         try {
 
             String outputFilename = new File(selectedVideo.getParent(),

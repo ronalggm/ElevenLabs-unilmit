@@ -12,6 +12,7 @@ public class MainMenu {
     private final int CUT_IN_THREE = 3;
     private Scanner input = new Scanner(System.in);
     private static String outputFilePath;
+    private static File selectedFile;
 
     public static void main(String[] args) throws IOException {
         System.out.println("Main menu");
@@ -33,7 +34,7 @@ public class MainMenu {
                 /*se lo tengo que pasar a una nueva variable porque el metodo
                  retorna un tipo File y se retorna a si mismo
                  --> */
-                File selectedFile = SelectorFiles.selectFiles();
+                selectedFile = SelectorFiles.selectFiles();
 
 
                 System.out.println("ingrese la cantidad de partes en que desa cortar 2, 3, 4");
@@ -41,7 +42,8 @@ public class MainMenu {
                 VideoSplitter.splitVideo(selectedFile, parts.nextInt());
 
             case 2:
-
+                selectedFile = SelectorFiles.selectFiles();
+                VideoSplitter.splitVideoIn270s(selectedFile);
 
         }
 

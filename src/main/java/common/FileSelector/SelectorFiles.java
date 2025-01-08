@@ -7,8 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import java.util.Arrays;
-import java.util.List;
+
 
 public class SelectorFiles {
     private static String lastDirectory = null;
@@ -74,7 +73,7 @@ public class SelectorFiles {
     }
 
 
-    public static File[] getLisfOffiles() {
+    public static File[] getLisfOfFiles() {
         return lisfOffiles;
     }
 }
