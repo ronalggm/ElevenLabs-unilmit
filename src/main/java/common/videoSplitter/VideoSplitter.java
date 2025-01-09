@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class VideoSplitter {
     private static final FFmpeg ffmpeg; //define la ubicacion de FFmpeg
     private static final FFprobe ffprobe;
+    private static String verde = "\u001B[32m";
+    private static String reset = "\u001B[0m";
 
     static {
         try {
@@ -28,45 +30,57 @@ public class VideoSplitter {
         double totalDuration =
                 ffprobe.probe(selectedVideo.getAbsolutePath())
                         .getFormat().duration;//probe selecciona el video, toma el tiempo y luego lo formateamos a la duracion en  double
-        double partDuration = totalDuration / numbersOfParts;
+        double segmentDuration = totalDuration / numbersOfParts;
         double cutPosition = 0;
-        System.out.println("Video duration: " + totalDuration);
-        System.out.println("Part duration: " + partDuration);
+        System.out.println(verde + "Video duration: " + totalDuration + reset);
+        System.out.println(verde + "Part duration: " + segmentDuration + reset);
         for (int i = 0; i < numbersOfParts; i++) {
-            cutPosition = partDuration * i;
-            ffmpegBuilder(selectedVideo, cutPosition, partDuration, i);
+            cutPosition = segmentDuration * i;
+            ffmpegBuilder(selectedVideo, cutPosition, segmentDuration, i);
         }
     }
 
 
     public static void splitVideoIn270s(File selectedVideo) throws IOException {
-
-
         //define ubicacion de FFprobe
 
 //probe selecciona el video, toma el tiempo y luego lo formateamos a la duracion en  double
         double totalDuration =
                 ffprobe.probe(selectedVideo.getAbsolutePath())
                         .getFormat().duration;
-        System.out.println("Video duration: " + totalDuration);
-        //Calcular la cantidad de segmentos completos y el tiempo restante
+        System.out.println(verde + "Video duration: " + totalDuration + reset);
+
+
         double segmentDuration = 270; //4,30minutos
-        int fullSegments = (int) (totalDuration / segmentDuration);
+        double fullSegments = totalDuration / segmentDuration;
+        double fullSegmentRounded = Math.floor(fullSegments);//Redondeo hacia abajo
         double remainingTime = totalDuration % segmentDuration;
-        double cutPosition;
-        for (int i = 1; i <= fullSegments; i++) {
-            if (i == fullSegments && remainingTime > 0) {
-                segmentDuration = remainingTime;
+        System.out.println(verde + "fullSegments duration: " + fullSegments + reset);
+        System.out.println(verde + "remainingTIme: " + remainingTime + reset);
+        double cutPosition = 0;
+        if (remainingTime > 0) {
+            fullSegmentRounded += 1;
+        }
+
+        for (int i = 0; i < fullSegmentRounded; i++) {
+            if (i==fullSegmentRounded &&remainingTime > 0) {
+                ffmpegBuilder(selectedVideo, cutPosition, remainingTime, i);
+
             }
-            cutPosition = fullSegments * i;
+
+            cutPosition = segmentDuration * i;
             ffmpegBuilder(selectedVideo, cutPosition, segmentDuration, i);
+
+
+
+
         }
 
 
     }
 
     //configura el archivo de salida
-    private static void ffmpegBuilder(File selectedVideo, double cutPosition, double partDuration, int numberPart) {
+    private static void ffmpegBuilder(File selectedVideo, double cutPosition, double segmentDuration, int numberPart) {
         try {
 
             String outputFilename = new File(selectedVideo.getParent(),
@@ -82,7 +96,7 @@ public class VideoSplitter {
                     .overrideOutputFiles(true)
                     .addOutput(outputFilename) //establece el nombre del archivo y la salida
                     .setStartOffset((long) cutPosition, TimeUnit.SECONDS)
-                    .setDuration((long) partDuration, TimeUnit.SECONDS) //duracion de cada segmento(desde el corte hasta el tiemnpo definido)
+                    .setDuration((long) segmentDuration, TimeUnit.SECONDS) //duracion de cada segmento(desde el corte hasta el tiemnpo definido)
                     .setFormat("mp4")
                     .addExtraArgs("-c", "copy")// copia los parametros del video, resolucion, bitrate etc
                     .done()
