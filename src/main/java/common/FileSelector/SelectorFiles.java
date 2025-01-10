@@ -8,11 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-
 public class SelectorFiles {
     private static String lastDirectory = null;
     private static File selectedFile;
-    private static File[] lisfOffiles;
+    private static File[] lisfOffiles;//para usar en el futuro con proposito mas general
     private static File[] filteredFilesNames;
     private static JFileChooser fileChooser = new JFileChooser();
 
@@ -34,7 +33,7 @@ public class SelectorFiles {
             lastDirectory = selectedFile.getPath();
             System.out.println("last DIRECTORTY: " + lastDirectory);
             //extraemos la lista de archivos dentro del directorio
-            lisfOffiles = fileChooser.getSelectedFiles();
+            // lisfOffiles = fileChooser.getSelectedFiles();
             //retornamos el arhivo para cortar
             return selectedFile;
 
@@ -52,29 +51,35 @@ public class SelectorFiles {
     }
 
 
-    public static File[] getAllFilesFromLastDirectory() throws IOException {
+    public static File[] getFilesToUp() throws IOException {
 
         if (lastDirectory == null) {
             throw new IOException("No se ha seleccionado ningun directorio  previamente");
         }
         String regex = ".*_part_\\d+\\.mp4";
-
         ArrayList<File> listFiltered = new ArrayList<>();
+        File directorio = new File(selectedFile.getParent());
+        lisfOffiles = directorio.listFiles();
 
-        for (File file : lisfOffiles) {
-            if (file.getName().matches(regex)) {
-                listFiltered.add(file);
+        for (File f : lisfOffiles) {
+            if (f.getName().matches(regex)
+                    && f.getName().contains(selectedFile.getName())) {
+                listFiltered.add(f);
             }
         }
-
+        System.out.println("-Lista de archivos para subir-");
+        for (File f : listFiltered) {
+            System.out.println( f.getName());
+        }
 
         return filteredFilesNames = listFiltered.toArray(new File[0]);
-
     }
 
 
-    public static File[] getLisfOfFiles() {
-        return lisfOffiles;
-    }
 }
+
+
+
+
+
 

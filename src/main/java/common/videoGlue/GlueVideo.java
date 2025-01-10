@@ -1,9 +1,9 @@
 package common.videoGlue;
 
-import common.FileSelector.SelectorFiles;
+import common.Drivers;
 import net.bramp.ffmpeg.FFmpeg;
 
-import java.io.File;
+
 import java.io.IOException;
 
 public class GlueVideo {
@@ -12,14 +12,8 @@ public class GlueVideo {
 
 
         try {
-            FFmpeg ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
-            //File selectedVideo = SelectorFiles.getFileFromLastDirectory("");
+            FFmpeg ffmpeg = new FFmpeg(Drivers.FFMPEG.getPath());
 
-            String baseName ="null"
-                    .replaceAll("_part_\\d+\\.mp4$", "") // Elimina "_part_X" seguido de ".mp4"
-                    + "_converted.mp4";
-
-            String outputFile = "";
 
 
         } catch (Exception e) {

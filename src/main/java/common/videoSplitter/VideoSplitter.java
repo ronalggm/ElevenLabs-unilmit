@@ -49,8 +49,6 @@ public class VideoSplitter {
                 ffprobe.probe(selectedVideo.getAbsolutePath())
                         .getFormat().duration;
         System.out.println(verde + "Video duration: " + totalDuration + reset);
-
-
         double segmentDuration = 270; //4,30minutos
         double fullSegments = totalDuration / segmentDuration;
         double fullSegmentRounded = Math.floor(fullSegments);//Redondeo hacia abajo
@@ -67,13 +65,8 @@ public class VideoSplitter {
                 ffmpegBuilder(selectedVideo, cutPosition, remainingTime, i);
 
             }
-
             cutPosition = segmentDuration * i;
             ffmpegBuilder(selectedVideo, cutPosition, segmentDuration, i);
-
-
-
-
         }
 
 
@@ -89,7 +82,7 @@ public class VideoSplitter {
                             + "_part_"
                             + numberPart
                             + ".mp4")
-                    .getAbsolutePath();
+                    .getAbsolutePath();//metodo del objeto file para obtener la ruta completa
 
             FFmpegBuilder builder = new FFmpegBuilder()
                     .setInput(selectedVideo.getAbsolutePath())
@@ -105,7 +98,7 @@ public class VideoSplitter {
             FFmpegExecutor executor = new FFmpegExecutor(ffmpeg);  //executor sirve para ejectuar el builder
             executor.createJob(builder).run();
 
-            System.out.println("Codificacion completada exitosamente");
+            System.out.println(verde+"Codificacion completada exitosamente"+reset);
         } catch (IOException e) {
             System.err.println("Error de " + e.getMessage());
             e.printStackTrace();
