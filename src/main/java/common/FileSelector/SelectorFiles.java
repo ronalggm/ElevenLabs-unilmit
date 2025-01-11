@@ -3,9 +3,12 @@ package common.FileSelector;
 import common.MainMenu;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +19,6 @@ public class SelectorFiles {
     private static File[] listOffiles;
     private static File[] filteredFilesNames;
     private static JFileChooser fileChooser = new JFileChooser();
-
-
     //METODOS
 
     //file chooser
@@ -33,7 +34,7 @@ public class SelectorFiles {
             //Mostrar la ruta del archivo seleccionado
             System.out.println("Archivo seleccionado" + selectedFile.getAbsolutePath());
             lastDirectory = selectedFile.getPath();
-            System.out.println("last DIRECTORTY: " + lastDirectory);
+            System.out.println("Last Directory: " + lastDirectory);
             //extraemos la lista de archivos dentro del directorio
             // lisfOffiles = fileChooser.getSelectedFiles();
             //retornamos el arhivo para cortar
@@ -65,7 +66,6 @@ public class SelectorFiles {
         String OriginalFileName = selectedFile.getName();
         Pattern pattern = Pattern.compile(regex);
 
-
         for (File f : listOffiles) {
             Matcher matcher = pattern.matcher(f.getName());
 
@@ -77,8 +77,21 @@ public class SelectorFiles {
         for (File f : listFiltered) {
             System.out.println(f.getName());
         }
+        Arrays.sort(filteredFilesNames, new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2) {
+                int part1 = Integer.parseInt(f1.getName().replaceAll(".*_part_(\\d+)\\.mp4", "$1"));
+                int part2 = Integer.parseInt(f2.getName().replaceAll(".*_part_(\\d+)\\.mp4", "$1"));
+                return 0;
+            }
+        });
 
-        return filteredFilesNames = listFiltered.toArray(new File[0]);
+        return filteredFilesNames;
+
+    }
+
+    public static File[] getFilteredFilesNames() {
+        return filteredFilesNames;
     }
 
 

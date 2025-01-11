@@ -44,6 +44,7 @@ public class MainMenu {
             case 2:
                 selectedFile = SelectorFiles.selectFiles();
                 VideoSplitter.splitVideoIn270s(selectedFile);
+                menuPrincipal();
                 break;
             case 3:
                 SelectorFiles.getFilesToUp();
