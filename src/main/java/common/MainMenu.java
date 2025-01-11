@@ -1,6 +1,7 @@
 package common;
 
 import common.FileSelector.SelectorFiles;
+import common.videoGlue.GlueVideo;
 import common.videoSplitter.VideoSplitter;
 
 import java.io.File;
@@ -36,7 +37,6 @@ public class MainMenu {
                  --> */
                 selectedFile = SelectorFiles.selectFiles();
 
-
                 System.out.println("ingrese la cantidad de partes en que desa cortar 2, 3, 4");
 
                 VideoSplitter.splitVideo(selectedFile, parts.nextInt());
@@ -44,7 +44,9 @@ public class MainMenu {
             case 2:
                 selectedFile = SelectorFiles.selectFiles();
                 VideoSplitter.splitVideoIn270s(selectedFile);
-
+                break;
+            case 3:
+                SelectorFiles.getFilesToUp();
         }
 
     }

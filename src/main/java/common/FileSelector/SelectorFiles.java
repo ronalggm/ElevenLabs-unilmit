@@ -6,12 +6,14 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class SelectorFiles {
     private static String lastDirectory = null;
     private static File selectedFile;
-    private static File[] lisfOffiles;//para usar en el futuro con proposito mas general
+    private static File[] listOffiles;
     private static File[] filteredFilesNames;
     private static JFileChooser fileChooser = new JFileChooser();
 
@@ -59,17 +61,21 @@ public class SelectorFiles {
         String regex = ".*_part_\\d+\\.mp4";
         ArrayList<File> listFiltered = new ArrayList<>();
         File directorio = new File(selectedFile.getParent());
-        lisfOffiles = directorio.listFiles();
+        listOffiles = directorio.listFiles();
+        String OriginalFileName = selectedFile.getName();
+        Pattern pattern = Pattern.compile(regex);
 
-        for (File f : lisfOffiles) {
-            if (f.getName().matches(regex)
-                    && f.getName().contains(selectedFile.getName())) {
+
+        for (File f : listOffiles) {
+            Matcher matcher = pattern.matcher(f.getName());
+
+            if (matcher.find()) {
                 listFiltered.add(f);
             }
         }
         System.out.println("-Lista de archivos para subir-");
         for (File f : listFiltered) {
-            System.out.println( f.getName());
+            System.out.println(f.getName());
         }
 
         return filteredFilesNames = listFiltered.toArray(new File[0]);
