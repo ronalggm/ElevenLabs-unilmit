@@ -20,12 +20,10 @@ public class SelectorFiles {
     private static File[] listOfFiles;//lista de todos los archivos del directorio
     //METODOS
 
-
     //file chooser
     public static File selectFiles() throws IOException {
         //SELECCIONA EL TIPO DE SELECCION, SI ARCHIVOS O CARPETAS
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
         int result = fileChooser.showOpenDialog(null);
 
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -38,15 +36,12 @@ public class SelectorFiles {
 
         } else if (result == JFileChooser.CANCEL_OPTION) {
             System.out.println("No se seleccionó ningun archivo");
-
             MainMenu.menuPrincipal();
-
         }
 //MainMenu.menuPrincipal();
         return selectFiles();
-
-
     }
+
     //Obtener la lista de archivos para subir
     public static File[] getFilesToUp() throws IOException {
         if (lastDirectory == null) {
@@ -86,7 +81,7 @@ public class SelectorFiles {
     }
 
 
-//Extrae el numero de parte de los archivos filtrados-> Se utiliza en el comparator de arriba;
+    //Extrae el numero de parte de los archivos filtrados-> Se utiliza en el comparator de arriba;
     private static int extractPartNumber(String filename, String regex) {
         try {
             Pattern pattern = Pattern.compile(regex);
@@ -123,6 +118,9 @@ public class SelectorFiles {
         }
     }
 
+    public static File getSelectedFile() {
+        return selectedFile;
+    }
 
 
 }
