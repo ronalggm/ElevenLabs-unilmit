@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class MainMenu {
+public class  MainMenu {
     private final int CUT_IN_TWO = 2;
     private final int CUT_IN_THREE = 3;
     private Scanner input = new Scanner(System.in);
