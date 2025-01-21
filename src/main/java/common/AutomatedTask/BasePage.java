@@ -39,8 +39,16 @@ public class BasePage {
     }
 
     public static void getText(String locator){
-        page.locator(locator).textContent();
+       textCopy= page.locator(locator).textContent();
     }
+public static void pasteText(String locator){
+        page.locator(locator).fill(textCopy);
+}
+
+
+
+
 
 
 }
+
