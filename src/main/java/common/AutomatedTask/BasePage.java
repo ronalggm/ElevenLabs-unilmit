@@ -38,16 +38,17 @@ public class BasePage {
         page.locator(selector).click();
     }
 
-    public static void getText(String locator){
-       textCopy= page.locator(locator).textContent();
+    public static void getText(String locator) {
+        textCopy = page.locator(locator).textContent();
     }
-public static void pasteText(String locator){
+
+    public static void pasteText(String locator) {
         page.locator(locator).fill(textCopy);
-}
+    }
 
-
-
-
+    public static void fillField(String locator, String text) {
+        page.locator(locator).fill(text);
+    }
 
 
 }
