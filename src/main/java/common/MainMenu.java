@@ -46,6 +46,7 @@ public class  MainMenu {
                     break;
                 case 3:
                     SelectorFiles.getFilesToUp();
+         int num=2;
             }
 
         } catch (InputMismatchException e) {
