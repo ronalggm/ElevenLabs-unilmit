@@ -58,7 +58,6 @@ public class SelectorFiles {
 
 
     private static void sortFilteredFiles() {
-        getListOfAllFiles();
         String regex = ".*_part_(\\d+)\\.mp4";// para ordenar en el comparator por numero
         ArrayList<File> listFiltered = new ArrayList<>();
         String originalFileName = selectedFile.getName();//obtener el nombre del archivo original
@@ -88,8 +87,7 @@ public class SelectorFiles {
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(filename);
             if (matcher.find()) {
-                return Integer.parseInt(matcher.group(1));
-            }
+                return Integer.parseInt(matcher.group(1));}
         } catch (NumberFormatException e) {
             System.err.println("Error al convertir el numero en archivo " + filename);
         }
