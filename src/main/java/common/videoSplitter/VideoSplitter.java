@@ -63,13 +63,10 @@ public class VideoSplitter {
         for (int i = 0; i < fullSegmentRounded; i++) {
             if (i==fullSegmentRounded &&remainingTime > 0) {
                 ffmpegBuilder(selectedVideo, cutPosition, remainingTime, i);
-
             }
             cutPosition = segmentDuration * i;
             ffmpegBuilder(selectedVideo, cutPosition, segmentDuration, i);
         }
-
-
     }
 
     //configura el archivo de salida
