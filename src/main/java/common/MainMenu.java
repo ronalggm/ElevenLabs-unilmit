@@ -40,7 +40,7 @@ public class  MainMenu {
                     VideoSplitter.splitVideo(SelectorFiles.getSelectedFile(), parts.nextInt());
 
                 case 2:
-                    // selectedFile = SelectorFiles.selectFiles();
+                    selectedFile = SelectorFiles.selectFiles();
                     VideoSplitter.splitVideoIn270s(SelectorFiles.getSelectedFile());
                     menuPrincipal();
                     break;

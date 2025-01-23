@@ -22,10 +22,8 @@ public class SelectorFiles {
 
     //file chooser
     public static File selectFiles() throws IOException {
-        //SELECCIONA EL TIPO DE SELECCION, SI ARCHIVOS O CARPETAS
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int result = fileChooser.showOpenDialog(null);
-
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
             System.out.println("Archivo seleccionado: " + selectedFile.getName());
@@ -42,37 +40,15 @@ public class SelectorFiles {
         return selectFiles();
     }
 
+
     //Obtener la lista de archivos para subir
     public static File[] getFilesToUp() throws IOException {
+        sortFilteredFiles();
+
         if (lastDirectory == null) {
             MainMenu.menuPrincipal();
             throw new IOException("No se ha seleccionado ningun directorio  previamente");
         }
-        //parametros
-        String regex = ".*_part_(\\d+)\\.mp4";// para ordenar en el comparator por numero
-        ArrayList<File> listFiltered = new ArrayList<>();
-        String originalFileName = selectedFile.getName();
-        String regex_mp4 = "\\.mp4";// regex para quitar .mp4
-        String secuencia = originalFileName.replaceAll(regex_mp4, "");//le qitamos al archivo original el .mp4
-
-        //1 Filtrar archivos que coinciden con la secuencia y el patron
-        getListOfFiles();
-        for (File f : listOfFiles) {
-            if (f.getName().contains(secuencia) && f.getName().matches(regex)) {
-                listFiltered.add(f);
-            }
-        }
-        //2 Convertimos el arraylist a array de los archivos filtrados
-        filteredFilesNames = listFiltered.toArray(new File[0]);
-        //3 Ordenamos los archivos cortados
-        Arrays.sort(filteredFilesNames, new Comparator<File>() {
-            @Override
-            public int compare(File f1, File f2) {
-                int part1 = extractPartNumber(f1.getName(), regex);
-                int part2 = extractPartNumber(f2.getName(), regex);
-                return Integer.compare(part1, part2);
-            }
-        });
         System.out.println("-Lista de archivos para subir-");
         for (File f : filteredFilesNames) {
             System.out.println(f.getName());
@@ -81,7 +57,32 @@ public class SelectorFiles {
     }
 
 
-    //Extrae el numero de parte de los archivos filtrados-> Se utiliza en el comparator de arriba;
+    private static void sortFilteredFiles() {
+        getListOfAllFiles();
+        String regex = ".*_part_(\\d+)\\.mp4";// para ordenar en el comparator por numero
+        ArrayList<File> listFiltered = new ArrayList<>();
+        String originalFileName = selectedFile.getName();//obtener el nombre del archivo original
+        String regex_mp4 = "\\.mp4";// regex para quitar .mp4
+        String secuencia = originalFileName.replaceAll(regex_mp4, "");//le qitamos al archivo original el .mp4
+
+        for (File f : getListOfAllFiles()) {
+            if (f.getName().contains(secuencia) && f.getName().matches(regex)) {
+                listFiltered.add(f);
+            }
+        }
+        //ordenamos la lista filtrada
+        filteredFilesNames = listFiltered.toArray(new File[0]);
+        Arrays.sort(filteredFilesNames, new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2) {
+                int part1 = extractPartNumber(f1.getName(), regex);
+                int part2 = extractPartNumber(f2.getName(), regex);
+                return Integer.compare(part1, part2);
+            }
+        });
+
+    }
+
     private static int extractPartNumber(String filename, String regex) {
         try {
             Pattern pattern = Pattern.compile(regex);
@@ -95,11 +96,13 @@ public class SelectorFiles {
         return -1;
     }
 
+
     //obtener la lista de todos los archivos del directorio
-    public static File[] getListOfFiles() {
+    public static File[] getListOfAllFiles() {
         try {
             // Validamos si selectedFile tiene un directorio padre
             File parentDirectory = selectedFile != null ? selectedFile.getParentFile() : null;
+
             if (parentDirectory != null && parentDirectory.isDirectory()) {
                 listOfFiles = parentDirectory.listFiles();
                 if (listOfFiles == null) {
@@ -118,6 +121,7 @@ public class SelectorFiles {
         }
     }
 
+    //2 Convertimos el arraylist a array de los archivos filtrados
     public static File getSelectedFile() {
         return selectedFile;
     }

@@ -11,11 +11,12 @@ public class BasePage {
     protected static Page page;
     private static String textCopy;
 
+    static {
+        playwright = Playwright.create();
+        browser = playwright.chromium().launch();
+    }
+
     public BasePage() {
-        if (playwright == null) {
-            playwright = Playwright.create();
-            browser = playwright.chromium().launch();
-        }
         //Crea una nueva pagina para cada instancia de la clase BasePage
         this.page = browser.newPage();
     }
