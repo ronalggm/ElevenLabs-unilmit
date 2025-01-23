@@ -73,9 +73,11 @@ public class VideoSplitter {
     }
 
     //configura el archivo de salida
-    private static void ffmpegBuilder(File selectedVideo, double cutPosition, double segmentDuration, int numberPart) {
+    private static void ffmpegBuilder(File selectedVideo,
+                                      double cutPosition,
+                                      double segmentDuration,
+                                      int numberPart) {
         try {
-
             String outputFilename = new File(selectedVideo.getParent(),
                     selectedVideo.getName()
                             .replace(".mp4", "")
