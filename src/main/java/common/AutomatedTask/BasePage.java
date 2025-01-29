@@ -1,56 +1,33 @@
 package common.AutomatedTask;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class BasePage {
 
-    protected static Playwright playwright;
-    protected static Browser browser;
-    protected static Page page;
-    private static String textCopy;
+    protected static WebDriver driver;
 
     static {
-        playwright = Playwright.create();
-        browser = playwright.chromium().launch();
+        driver = new ChromeDriver();
+
     }
 
-    public BasePage() {
-        //Crea una nueva pagina para cada instancia de la clase BasePage
-        this.page = browser.newPage();
+    BasePage(WebDriver driver) {
+        BasePage.driver = driver;
     }
 
-    //Metodo para cerrrar Playwright y el navegador
-    public static void closePlaywright() {
-        if (browser != null) {
-            browser.close();
-        }
-        if (playwright != null) {
-            playwright.close();
-        }
-    }
 
     public static void navigate(String url) {
-        page.navigate(url);
+        BasePage.driver.get(url);
     }
 
-    public static void clickElement(String selector) {
-        page.locator(selector).click();
-    }
 
-    public static void getText(String locator) {
-        textCopy = page.locator(locator).textContent();
-    }
-
-    public static void pasteText(String locator) {
-        page.locator(locator).fill(textCopy);
-    }
-
-    public static void fillField(String locator, String text) {
-        page.locator(locator).fill(text);
+    public String SOdetector() {
+        return System.getProperty("os.name").toLowerCase();
     }
 
 
 }
+
 

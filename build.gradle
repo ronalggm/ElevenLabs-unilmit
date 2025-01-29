@@ -12,14 +12,13 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-
 // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
-    implementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.28.1'
+
 // https://mvnrepository.com/artifact/net.bramp.ffmpeg/ffmpeg
     implementation 'net.bramp.ffmpeg:ffmpeg:0.8.0'
 
 // https://mvnrepository.com/artifact/com.microsoft.playwright/playwright
-    implementation 'com.microsoft.playwright:playwright:1.49.0'
 
 
 }

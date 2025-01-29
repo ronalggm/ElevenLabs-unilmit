@@ -1,7 +1,6 @@
 package common.FileSelector;
 
-import common.MainMenu;
-
+import common.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
